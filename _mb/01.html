@@ -1,0 +1,55 @@
+﻿<html> 
+	<head>
+		<script>
+			'use strict';
+			
+			var pkg = (function () {
+				var __create = Object.create,
+					source = __create(null),
+					module = __create(null);
+				
+				source['a'] = function () {
+					var module = __create(null);
+					module.exports = __create(null);
+					
+					(function (module, exports) {
+						//a.js
+						var b = pkg('b');
+						
+						console.log('init a');
+						exports.say = function () {
+							console.log('A');
+							b.say();
+						};
+					}(module, module.exports));
+					
+					return module.exports;
+				};
+				
+				source['b'] = function () {
+					var module = __create(null);
+					module.exports = __create(null);
+					
+					(function (module, exports) {
+						//b.js
+						console.log('init b');
+						exports.say = function () {
+							console.log('B');
+						};
+					}(module, module.exports));
+					
+					return module.exports;
+				};
+				
+				return function (name) {
+					return module[name] || (module[name] = source[name]());
+				};
+			}());
+			
+			//index.js
+			var a = pkg('a');
+		</script>
+	</head>
+	<body>		
+	</body>
+</html>

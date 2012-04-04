@@ -1,0 +1,67 @@
+﻿<html> 
+	<head>
+		<script>
+			/*
+			 index.js
+			 ./a/index.js
+
+			 */
+			'use strict';
+			(function (global) {
+				var pkg = (function () {
+					var __create = Object.create,
+						source = __create(null),
+						module = __create(null);
+					
+					function _pkg (name) {
+						return module[name] || (module[name] = source[name]());
+					}
+					
+					source['./a/index.js'] = function () {
+						var module = __create(null);
+						module.exports = __create(null);
+						
+						//no call pkg;
+						
+						(function (module, exports, global) {
+							// a/index.js
+							console.log('init a');
+							exports.say = function () {
+								console.log('A');
+							};
+						}(module, module.exports, global));
+						
+						return module.exports;
+					};
+
+					
+					source['index.js'] = function () {
+						var module = __create(null),
+							cache = __create(null);
+							
+						module.exports = __create(null);
+						
+						function pkg(name) {
+							return cache[name] || (cache[name] = _pkg(name));
+						}
+						
+						(function (module, exports, global) {
+							//index.js
+							var a = pkg('./a');
+							console.log('init index.js');
+							a.say();
+						}(module, module.exports, global));
+						
+						return module.exports;
+					};
+					
+					return _pkg;
+				}());
+				
+				pkg('index.js');
+			}(this));
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
